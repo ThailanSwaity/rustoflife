@@ -42,6 +42,7 @@ impl GameOfLife {
     }
 
     fn get_neighbours(&self, x: u16, y: u16) -> u16 {
+        // TODO: Make this wrap around
         let mut neighbours = 0;
         for dx in -1..=1 {
             for dy in -1..=1 {
@@ -52,9 +53,8 @@ impl GameOfLife {
                 let ax: i16 = x as i16 + dx;
                 let ay: i16 = y as i16 + dy;
 
-                if ax < 0 || ax >= self.cols as i16 || ay < 0 || ay >= self.rows as i16 {
-                    continue;
-                }
+                let ax = (ax).rem_euclid(self.cols as i16);
+                let ay = (ay).rem_euclid(self.rows as i16);
 
                 if self.grid[ax as usize][ay as usize] {
                     neighbours += 1;
